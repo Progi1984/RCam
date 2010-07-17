@@ -1,23 +1,17 @@
-﻿IncludeFile "RCam_Res.pb"
-IncludeFile "RCam_Inc.pb"
-
-	RCam_Init()
-	
+﻿
 	If OpenWindow(0, 0, 0, 600, 260, "RootsCam", #PB_Window_ScreenCentered | #PB_Window_SystemMenu)
-		If CreateGadgetList(WindowID(0))
-			WebCam = RCam_Gadget(#PB_Any, 10, 10, 320, 240)
-			ButtonGadget(1, 340,010, 120, 30, "Start")
-			ButtonGadget(2, 470,010, 120, 30, "Stop")
-			DisableGadget(1,#False)
-			DisableGadget(2,#True)
-		EndIf
+		WebCam = RCam_Gadget(#PB_Any, 10, 10, 320, 240)
+		ButtonGadget(1, 340,010, 120, 30, "Start")
+		ButtonGadget(2, 470,010, 120, 30, "Stop")
+		DisableGadget(1,#False)
+		DisableGadget(2,#True)
 	EndIf
 	
 	RCam_Connect(WebCam,0)
-	RCam_EnablePreviewMode(WebCam, #True)
+	RCam_EnablePreviewMode(WebCam, #True, 15)
 	
 	RCam_SetCaptureFilename(WebCam, "RCamTmp.avi")
-	RCam_SetAudioCapture(WebCam)
+	RCam_SetAudioCapture(WebCam, #WAVE_FORMAT_PCM, 2, 11025, 22050, 2, 8)
   Repeat
     Event  = WindowEvent()
     Gadget = EventGadget()
@@ -38,12 +32,5 @@ IncludeFile "RCam_Inc.pb"
   Until Event=#PB_Event_CloseWindow
 	
 	RCam_Disconnect(WebCam)
-	RCamFreeGadget(WebCam)
-	RCam_End()
+	RCam_FreeGadget(WebCam)
 	End
-
-; IDE Options = PureBasic 4.10 (Windows - x86)
-; CursorPosition = 18
-; Folding = -
-; EnableCompileCount = 4
-; EnableBuildCount = 0
